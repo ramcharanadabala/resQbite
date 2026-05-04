@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ResQBite</title>
+<style>
+body{background:#0b1a14;color:white;font-family:sans-serif}
+.food-card{border:1px solid #1f3; padding:10px;margin:10px;border-radius:10px}
+</style>
+</head>
+<body>
+
+<h1>ResQBite Dashboard</h1>
+
+<h2>Stats</h2>
+<p id="stats">0 Meals Rescued | 0 Active Donors</p>
+
+<h2>Food Available Near You</h2>
+<div id="foodContainer"></div>
+
+<script>
+function loadData(){
+ const data=JSON.parse(localStorage.getItem("donations")||"[]");
+ document.getElementById("stats").innerText=data.length+" Meals Rescued | "+data.length+" Active Donors";
+
+ const container=document.getElementById("foodContainer");
+ container.innerHTML="";
+ if(data.length===0){
+   container.innerHTML="<p>No food available</p>";
+ }else{
+   data.forEach(item=>{
+     const div=document.createElement("div");
+     div.className="food-card";
+     div.innerHTML=`
+       <h3>${item.name}</h3>
+       <p>${item.location}</p>
+       <p>Qty: ${item.quantity}</p>
+       <a target="_blank" href="https://www.google.com/maps?q=${item.location}">View Map</a>
+     `;
+     container.appendChild(div);
+   });
+ }
+}
+window.onload=loadData;
+</script>
+
+</body>
+</html>
